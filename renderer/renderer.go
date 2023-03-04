@@ -339,12 +339,12 @@ func (r *ADFRenderer) walkNode(source []byte, node ast.Node, entering bool) ast.
 		return ast.WalkSkipChildren
 
 	case *ast.AutoLink:
-		adfNode.Text = string(n.Text(source))
+		adfNode.Type = NodeTypeText
+		adfNode.Text = string(n.URL(source))
 		adfNode.Marks = []MarkStruct{{
 			Type: MarkLink,
 			Attributes: &MarkAttributes{
-				Href:  string(n.URL(source)),
-				Title: adfNode.Text,
+				Href: string(n.URL(source)),
 			},
 		}}
 		r.context.PushContent(adfNode)
