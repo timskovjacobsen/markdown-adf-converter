@@ -1,4 +1,4 @@
-module github.com/tomhjp/markdown-to-adf
+module github.com/timskovjacobsen/markdown-adf-converter
 
 go 1.16
 

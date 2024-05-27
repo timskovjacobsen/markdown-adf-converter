@@ -3,6 +3,7 @@ package renderer
 import (
 	"encoding/json"
 	"io"
+	"strings"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
@@ -267,9 +268,23 @@ func (r *ADFRenderer) walkNode(source []byte, node ast.Node, entering bool) ast.
 		*ast.TextBlock, // Untested
 		*ast.List,
 		*ast.ListItem,
-		*ast.ThematicBreak,
-		*ast.CodeBlock: // Untested
+		*ast.ThematicBreak:
 		r.context.PushBlockNode(adfNode)
+
+	case *ast.CodeBlock: // Untested
+		r.context.PushBlockNode(adfNode)
+		if cb, ok := node.(*ast.CodeBlock); ok {
+			var content string
+			lines := cb.Lines()
+			for i := 0; i < lines.Len(); i++ {
+				segment := lines.At(i)
+				content += string(segment.Value(source))
+			}
+			adfNode.AddContent(&Node{
+				Type: NodeTypeText,
+				Text: strings.TrimSuffix(content, "\n"),
+			})
+		}
 
 	case *ast.Blockquote:
 		r.context.PushBlockNode(adfNode)

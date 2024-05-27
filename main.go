@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/tomhjp/markdown-to-adf/renderer"
+	"github.com/timskovjacobsen/markdown-adf-converter/renderer"
 )
 
 var output = flag.String("o", "", "output file to write, defaults to stdout if not set")
